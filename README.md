@@ -1,74 +1,194 @@
-# CareFlow — Patient Admission Management App
+# CareFlow – Patient Admission Management System
 
-A full-stack patient admission management app for the DScribe / Unriddle Technologies Software Engineer Intern Round 1 task.
+A full-stack Patient Admission Management application developed for the **DScribe / Unriddle Technologies Software Engineer Intern – Round 1 Assignment**.
 
-## Tech stack
-- Frontend: React.js + Vite (JavaScript only)
-- Backend: Java 17 + Spring Boot 3.5, Spring Web, Spring Data JPA, Bean Validation
-- Database: H2 file-based database (records persist across backend restarts)
+CareFlow helps hospital staff manage patient admission records, search and filter patients, update patient information, and manage discharge status.
 
-## Features implemented
-1. Add patient
-2. View all patient records
-3. Filter by ward, department and doctor
-4. Search by patient name (case-insensitive partial match)
-5. Edit patient
-6. Delete patient with browser confirmation
-7. Mark an admitted patient as discharged
-8. Responsive layout for desktop, tablet and mobile
+## Live Demo
 
-## Validation (frontend and backend)
-- Name: required; alphabetic name with spaces, apostrophe or hyphen separators
-- Age: required integer from 0 through 120
-- Gender, ward, department, doctor and status: required and restricted to the supplied lists
-- Admission date: required and cannot be after today's date
-- Backend returns HTTP 400 with a clear message for invalid data
+- **Frontend:** https://patient-admission-management-ten.vercel.app/
+- **Backend API:** https://patient-admission-management-production.up.railway.app/
+- **Patient API:** https://patient-admission-management-production.up.railway.app/api/patients
+- **GitHub Repository:** https://github.com/prammu/patient-admission-management
+
+## Tech Stack
+
+**Frontend**
+- React.js
+- Vite
+- JavaScript
+- HTML5 and CSS3
+- Lucide React
+
+**Backend**
+- Java 17+
+- Spring Boot 3.5
+- Spring Web
+- Spring Data JPA
+- Bean Validation
+
+**Database**
+- H2 file-based database
+
+**Deployment**
+- Frontend: Vercel
+- Backend: Railway
+- Source Control: Git and GitHub
+
+## Features Implemented
+
+1. Add new patient records.
+2. View all patient records.
+3. Search patients by name using case-insensitive partial matching.
+4. Filter patients by ward, department, and doctor.
+5. Edit existing patient information.
+6. Delete patient records with confirmation.
+7. Mark admitted patients as discharged.
+8. Responsive user interface for desktop, tablet, and mobile devices.
+9. Persistent database storage using H2.
+
+## Patient Information
+
+The application manages the following details:
+
+- Patient Name
+- Age
+- Gender
+- Ward
+- Department
+- Doctor
+- Admission Date
+- Admission Status (Admitted / Discharged)
+
+## Validation
+
+Frontend and backend validation are implemented.
+
+- **Name:** Required; accepts alphabetic names with spaces, apostrophes, and hyphens.
+- **Age:** Required integer between 0 and 120.
+- **Gender:** Required.
+- **Ward:** Required.
+- **Department:** Required.
+- **Doctor:** Required.
+- **Admission Date:** Required and cannot be a future date.
+- **Status:** Required.
+
+Invalid patient data is rejected by the backend with an appropriate HTTP 400 response.
 
 ## Prerequisites
+
 - Java 17 or newer
 - Maven 3.8+
-- Node.js 18+ and npm
+- Node.js 18 or newer
+- npm
 
-## Run the backend
-Open a terminal in `backend`:
+## Run Locally
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/prammu/patient-admission-management.git
+cd patient-admission-management
+```
+
+### 2. Start the backend
+
+Open a terminal inside the `backend` directory.
 
 ```bash
 mvn spring-boot:run
 ```
 
-API base URL: `http://localhost:8080/api`
+The backend runs at:
 
-The H2 database is stored in `backend/data/patientdb.mv.db`. It is file-backed, so patient records remain after restarting the backend. Do not delete the `data` folder if you want to retain records.
+```text
+http://localhost:8080
+```
 
-Optional H2 console: `http://localhost:8080/h2-console`
-- JDBC URL: `jdbc:h2:file:./data/patientdb;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE`
-- User: `sa`
-- Password: (leave blank)
+Patient API:
 
-## Run the frontend
-Open another terminal in `frontend`:
+```text
+http://localhost:8080/api/patients
+```
+
+### 3. Configure the frontend
+
+Open another terminal inside the `frontend` directory.
+
+Create a `.env.local` file containing:
+
+```env
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+The API base URL must not include `/api`, because the frontend appends that path automatically.
+
+### 4. Start the frontend
+
+Run:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite (normally `http://localhost:5173`). The frontend expects the backend at `http://localhost:8080`. To use a different API URL, create `frontend/.env` with:
+Open the local URL displayed by Vite, normally:
 
-```env
-VITE_API_URL=http://localhost:8080/api
+```text
+http://localhost:5173
 ```
 
-## REST API
-| Method | Endpoint | Purpose |
-|---|---|---|
-| GET | `/api/patients` | List patients; optional `ward`, `department`, `doctor`, `search` query params |
-| POST | `/api/patients` | Create patient |
-| PUT | `/api/patients/{id}` | Update patient |
-| DELETE | `/api/patients/{id}` | Delete patient |
-| PATCH | `/api/patients/{id}/discharge` | Mark patient discharged |
+## Database Configuration
 
-### Example create request
+The application uses an H2 file-based database with Spring Data JPA.
+
+The database configuration is maintained in:
+
+```text
+backend/src/main/resources/application.properties
+```
+
+For local development, the database can use:
+
+```properties
+spring.datasource.url=jdbc:h2:file:./data/patientdb
+```
+
+For Railway deployment, the database is configured to use:
+
+```properties
+spring.datasource.url=jdbc:h2:file:/app/data/patientdb
+```
+
+A persistent Railway volume should be mounted at `/app/data` to retain database records across deployments and restarts.
+
+The H2 console is available at:
+
+```text
+http://localhost:8080/h2-console
+```
+
+Use the JDBC URL configured for the environment you are running.
+
+## REST API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/patients` | Retrieve all patients |
+| POST | `/api/patients` | Add a new patient |
+| PUT | `/api/patients/{id}` | Update patient details |
+| DELETE | `/api/patients/{id}` | Delete a patient |
+| PATCH | `/api/patients/{id}/discharge` | Mark patient as discharged |
+
+The GET endpoint supports optional query parameters:
+
+- `ward`
+- `department`
+- `doctor`
+- `search`
+
+### Example Patient Request
+
 ```json
 {
   "name": "Aarav Sharma",
@@ -82,7 +202,71 @@ VITE_API_URL=http://localhost:8080/api
 }
 ```
 
-## Important notes before submission
-- The ward, department, doctor and gender values are selectable lists in the UI and are also allow-listed by the backend. Replace the sample doctor/department/ward choices if the assignment brief or evaluator provides a specific master list.
-- Test the full flow in a browser after starting both servers: add, search, filter, edit, discharge, delete, then restart the backend and confirm records persist.
-- For production deployment, configure a managed database, authentication/authorization and HTTPS. Those are not required in the supplied task brief.
+## Deployment Configuration
+
+**Frontend – Vercel**
+
+- Connected to the GitHub repository.
+- Root directory: `frontend`.
+- Build command: `npm run build`.
+- Output directory: `dist`.
+- Environment variable:
+
+```env
+VITE_API_BASE_URL=https://patient-admission-management-production.up.railway.app
+```
+
+**Backend – Railway**
+
+- Connected to the GitHub repository.
+- Backend deployed using Spring Boot.
+- Uses the Railway-provided port.
+- Database configured for `/app/data`.
+
+## Project Structure
+
+```text
+patient-admission-management/
+│
+├── backend/
+│   ├── src/
+│   │   └── main/
+│   │       ├── java/
+│   │       └── resources/
+│   │           └── application.properties
+│   └── pom.xml
+│
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   ├── main.jsx
+│   │   └── styles.css
+│   ├── index.html
+│   └── package.json
+│
+├── .gitignore
+└── README.md
+```
+
+## Testing
+
+The following operations should be tested before submission:
+
+- Add a patient.
+- View patient records.
+- Search by patient name.
+- Filter by ward, department, and doctor.
+- Edit patient details.
+- Mark a patient as discharged.
+- Delete a patient record.
+- Refresh the application and verify saved records.
+- Verify database persistence after restarting the backend.
+
+## Future Improvements
+
+- Authentication and authorization.
+- Integration with a managed production database.
+- More advanced patient reporting and analytics.
+
+---
