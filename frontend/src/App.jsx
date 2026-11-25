@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Activity, Bed, CalendarDays, Check, ChevronDown, ClipboardList, Clock3, FilePlus2, HeartPulse, Pencil, Plus, Search, Stethoscope, Trash2, Users, X } from 'lucide-react';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+const API = `${import.meta.env.VITE_API_BASE_URL}/api`;
 const OPTIONS = {
   gender: ['Male','Female','Other'],
   ward: ['General Ward','ICU','Emergency','Private Ward','Pediatric Ward'],
