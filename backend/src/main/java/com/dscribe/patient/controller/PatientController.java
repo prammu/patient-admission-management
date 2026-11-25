@@ -5,7 +5,7 @@ import com.dscribe.patient.service.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-@RestController @RequestMapping("/api/patients") @CrossOrigin(origins="http://localhost:5173")
+@RestController @RequestMapping("/api/patients") @CrossOrigin(origins={"http://localhost:5173",  "https://patient-admission-management-ten.vercel.app"})
 public class PatientController {
   private final PatientService service;
   public PatientController(PatientService service){this.service=service;}
